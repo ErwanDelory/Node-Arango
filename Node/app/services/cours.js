@@ -28,3 +28,7 @@ exports.findByKey = function (key) {
 
   return Cours.firstExample({ _key: key });
 };
+
+exports.findAllAlpha = function () {
+  return Cours;
+};

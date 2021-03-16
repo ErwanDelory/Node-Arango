@@ -6,14 +6,15 @@ const coursController = require('../resources/cours');
 
 // User
 router.post('/user', userController.insertUser);
+router.delete('/delete/:id', userController.deleteUser);
+router.put('/edituser/:id', userController.editUser);
 
 // Cours
-router.post('/cours', coursController.createCours);
 router.get('/cours', coursController.getAllCours);
 router.get('/cours/:id', coursController.getCoursById);
-
-// Topics
-
-// Posts
+router.get('/coursalpha', coursController.getAllCoursAlpha);
+router.post('/addcours', coursController.createCours);
+router.get('/courspromo', coursController.getCoursByPromo);
+router.get('/courspromoalpha', coursController.getCoursByPromoAlpha);
 
 module.exports = router;

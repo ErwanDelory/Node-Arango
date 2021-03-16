@@ -4,10 +4,7 @@ const DB = new arangojs.Database({
   url: dbConfig.url,
 });
 
-// Database selection
 DB.useDatabase(dbConfig.database);
-
-// Speficy the database user
 DB.useBasicAuth(dbConfig.username, dbConfig.password);
 
 var User = DB.collection('USER');
