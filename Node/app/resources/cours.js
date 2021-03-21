@@ -31,32 +31,44 @@ function createCours(req, res) {
     });
 }
 
-function getCoursById(req, res) {
-  var id = req.params.id;
+async function getCoursById(req, res) {
+  if (!req.params.id) {
+    return res.status(500).json({ message: "L'id n'existe pas !" });
+  }
+  try {
+    const result = await db.query(
+      aql`
+      FOR cours IN ${COURS}
+      FILTER cours.id == ${req.params.id}
+      RETURN cours
+  
+  `
+    );
+    const value = await result.all();
 
-  CoursService.findByKey(id)
-    .then(function (doc) {
-      console.log(`Get a document by key "${req.params.id}".`, doc.id);
-
-      return res.status(200).json(doc);
-    })
-    .catch(function (error) {
-      console.error('Error getting single document', error);
-      return res.status(500).json(error);
-    });
+    return res.status(200).json({ message: 'Ok', data: value });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: 'error' });
+  }
 }
 
-function getAllCours(req, res) {
-  CoursService.findAll()
-    .then(function (response) {
-      console.log(`Load all saved documents.`, response._result);
+async function getAllCours(req, res) {
+  try {
+    const result = await db.query(
+      aql`
+      FOR cours IN ${COURS}
+      RETURN cours
+  
+  `
+    );
+    const value = await result.all();
 
-      return res.status(200).json(response._result);
-    })
-    .catch(function (error) {
-      console.error('Error getting documents', error);
-      return res.status(500).json(error);
-    });
+    return res.status(200).json({ message: 'Ok', data: value });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: 'error' });
+  }
 }
 
 async function getAllCoursAlpha(req, res) {
