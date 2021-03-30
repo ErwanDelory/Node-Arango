@@ -16,5 +16,6 @@ router.get('/coursalpha', coursController.getAllCoursAlpha);
 router.post('/addcours', coursController.createCours);
 router.get('/courspromo', coursController.getCoursByPromo);
 router.get('/courspromoalpha', coursController.getCoursByPromoAlpha);
+router.get('/coursuser/:id', coursController.getCoursByUser);
 
 module.exports = router;

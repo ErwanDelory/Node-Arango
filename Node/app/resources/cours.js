@@ -16,6 +16,8 @@ function createCours(req, res) {
     titreCours: req.body.titreCours,
     nbTopic: req.body.nbTopic,
     nbPosts: req.body.nbPosts,
+    promo: req.body.promo,
+    inscription: req.body.inscription,
     lastPost: Date(),
   };
 
@@ -143,9 +145,28 @@ async function getCoursByPromoAlpha(req, res) {
   }
 }
 
+async function getCoursByUser(req, res) {
+  try {
+    const result = await db.query(
+      aql`
+      FOR cours IN ${COURS}
+      FILTER cours.inscription == ${req.params.id}
+      RETURN cours.titreCours 
+  `
+    );
+    const value = await result.all();
+
+    return res.status(200).json({ message: 'Ok', data: value });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: 'error' });
+  }
+}
+
 exports.createCours = createCours;
 exports.getCoursById = getCoursById;
 exports.getAllCours = getAllCours;
 exports.getAllCoursAlpha = getAllCoursAlpha;
 exports.getCoursByPromo = getCoursByPromo;
 exports.getCoursByPromoAlpha = getCoursByPromoAlpha;
+exports.getCoursByUser = getCoursByUser;
